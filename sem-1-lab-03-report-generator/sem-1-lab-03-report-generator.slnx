@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="sem-1-lab-03-report-generator/sem-1-lab-03-report-generator.csproj" />
+  <Project Path="sem-1-lab-03-tests/sem-1-lab-03-tests.csproj" Id="9e3717eb-b1ab-47f0-b4c0-5ea280cbe004" />
 </Solution>
