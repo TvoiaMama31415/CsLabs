@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Xml.Linq;
 
 internal class Program
 {
@@ -22,13 +23,15 @@ internal class Program
 
         _lineIndex = 1;
 
-        PrintTree();
+        string treeText = PrintTree();
+        Console.Write(treeText);
 
         Console.ReadLine();
     }
 
-    private static void PrintTree()
+    private static string PrintTree()
     {
+        string result = "";
         while (_lineIndex < _lines.Length)
         {
             var line = _lines[_lineIndex].Trim();
@@ -45,34 +48,48 @@ internal class Program
 
                 _lineIndex++;
 
-                return;
+                return result ;
             }
 
             if (line.StartsWith("BEGIN "))
             {
                 var name = line.Substring(6);
 
-                Console.Write(GetIndent());
-                Console.WriteLine("├─" + name);
+                result += (GetIndent()+ "├─" + name + "\n");
 
                 _depth++;
 
                 _lineIndex++;
 
-                PrintTree();
+                result+=PrintTree();
             }
-
         }
+        return result;
     }
     private static string GetIndent()
     {
-        var result = "";
+        var resultI = "";
 
         for (var i = 0; i < _depth; i++)
         {
-            result += "│ ";
+            resultI += "│ ";
         }
 
-        return result;
+        return resultI;
     }
+
 }
+//      1 ошибка:
+// var name = line.Substring(5);
+// обрезает 5 символов в строке "BEGIN (буква)" и получается " (буква)", а надо просто букву без пробела => меняем 5 на 6
+//      2 ошибка:
+// в методе PrintTree() if (line == "") _lineIndex увеличивался на 2, а чобы считывать строки друг за другом надо _lineIndex += 1
+//      3 ошибка:
+// в методе GetIndent() в условиях цикла было i <= _depth, из-за этого появлялись лишние линии, нужно заменить на i < _depth
+//      4 ошибка:
+// в методе PrintTree() if (line.StartsWith("BEGIN ")) _lineIndex увеличивался после вызова рекурсии заново и в итоге индекс при выполнении if не увеличивается
+// 
+// Изменила программу, чтобы вывод на экран был только в методе Main()
+
+
+
